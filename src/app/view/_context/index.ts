@@ -1,0 +1,1 @@
+export { PluginsInstance } from "./plugin-instance";
