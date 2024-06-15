@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 
-import { GeistSans } from "geist/font/sans";
+import { Inter as FontSans } from "next/font/google";
+import { cn } from "@/lib/utils";
 
 import { TRPCReactProvider } from "@/trpc/react";
 
@@ -10,14 +11,26 @@ export const metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
-export default function RootLayout({
-  children,
-}: {
+const fontSans = FontSans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
+
+type Props = {
   children: React.ReactNode;
-}) {
+};
+
+export default function RootLayout(props: Props) {
+  const { children } = props;
+
   return (
-    <html lang="en" className={`${GeistSans.variable}`}>
-      <body>
+    <html lang="en">
+      <body
+        className={cn(
+          "bg-background min-h-screen font-sans antialiased",
+          fontSans.variable,
+        )}
+      >
         <TRPCReactProvider>{children}</TRPCReactProvider>
       </body>
     </html>
