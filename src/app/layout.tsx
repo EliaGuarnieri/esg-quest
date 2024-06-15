@@ -1,8 +1,8 @@
 import "@/styles/globals.css";
 
 import { Inter as FontSans } from "next/font/google";
-import { cn } from "@/lib/utils";
 
+import { cn } from "@/lib/utils";
 import { TRPCReactProvider } from "@/trpc/react";
 
 export const metadata = {
@@ -27,7 +27,7 @@ export default function RootLayout(props: Props) {
     <html lang="en">
       <body
         className={cn(
-          "bg-background min-h-screen font-sans antialiased",
+          "min-h-screen bg-background font-sans antialiased",
           fontSans.variable,
         )}
       >
