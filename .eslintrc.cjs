@@ -6,7 +6,8 @@ const config = {
   },
   "plugins": [
     "@typescript-eslint",
-    "drizzle"
+    "drizzle",
+    "simple-import-sort"
   ],
   "extends": [
     "next/core-web-vitals",
@@ -55,7 +56,9 @@ const config = {
           "ctx.db"
         ]
       }
-    ]
+    ],
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error"
   }
 }
 module.exports = config;
