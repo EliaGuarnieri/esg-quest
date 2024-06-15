@@ -70,17 +70,21 @@ export const Zoom = () => {
   }, []);
 
   return (
-    <div className="flex items-center gap-1">
+    <div className="flex items-center rounded-md bg-accent px-1">
       <ZoomOut>
         {(props: RenderZoomOutProps) => (
-          <Button variant="ghost" className="p-2" onClick={props.onClick}>
-            <ZoomOutIcon />
+          <Button
+            variant="ghost"
+            className="h-auto p-2"
+            onClick={props.onClick}
+          >
+            <ZoomOutIcon className="h-4 w-4" />
           </Button>
         )}
       </ZoomOut>
 
       <DropdownMenu>
-        <DropdownMenuTrigger className="w-16 self-stretch rounded-md bg-input px-2">
+        <DropdownMenuTrigger className="h-8 w-16 rounded-md bg-input text-sm">
           <CurrentScale />
         </DropdownMenuTrigger>
         <DropdownMenuContent>
@@ -114,8 +118,12 @@ export const Zoom = () => {
 
       <ZoomIn>
         {(props: RenderZoomOutProps) => (
-          <Button variant="ghost" className="p-2" onClick={props.onClick}>
-            <ZommInIcon />
+          <Button
+            variant="ghost"
+            className="h-auto p-2"
+            onClick={props.onClick}
+          >
+            <ZommInIcon className="h-4 w-4" />
           </Button>
         )}
       </ZoomIn>

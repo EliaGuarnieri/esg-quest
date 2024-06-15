@@ -44,45 +44,37 @@ export const PageNavigation = () => {
   }, []);
 
   return (
-    <div className="fixed bottom-2 flex w-full justify-center">
-      <div className="flex items-center gap-4 rounded-md bg-accent px-2 text-sm text-foreground">
-        <GoToPreviousPage>
-          {(props: RenderGoToPageProps) => (
-            <NavigationButton
-              disabled={props.isDisabled}
-              onClick={props.onClick}
-            >
-              <ChevronLeft className="h-4 w-4" /> Previous
-            </NavigationButton>
+    <div className="flex items-center gap-4 rounded-md bg-accent px-2 text-sm text-foreground">
+      <GoToPreviousPage>
+        {(props: RenderGoToPageProps) => (
+          <NavigationButton disabled={props.isDisabled} onClick={props.onClick}>
+            <ChevronLeft className="h-4 w-4" /> Previous
+          </NavigationButton>
+        )}
+      </GoToPreviousPage>
+      <div className="flex items-center gap-1">
+        <span>Page </span>
+        <CurrentPageLabel>
+          {(props: RenderCurrentPageLabelProps) => (
+            <CurrentPageInput
+              currentPage={props.currentPage}
+              numberOfPages={props.numberOfPages}
+              jumpToPage={jumpToPage}
+              jumpToNextPage={jumpToNextPage}
+              jumpToPreviousPage={jumpToPreviousPage}
+            />
           )}
-        </GoToPreviousPage>
-        <div className="flex items-center gap-1">
-          <span>Page </span>
-          <CurrentPageLabel>
-            {(props: RenderCurrentPageLabelProps) => (
-              <CurrentPageInput
-                currentPage={props.currentPage}
-                numberOfPages={props.numberOfPages}
-                jumpToPage={jumpToPage}
-                jumpToNextPage={jumpToNextPage}
-                jumpToPreviousPage={jumpToPreviousPage}
-              />
-            )}
-          </CurrentPageLabel>
-          <span>of </span>
-          <NumberOfPages />
-        </div>
-        <GoToNextPage>
-          {(props: RenderGoToPageProps) => (
-            <NavigationButton
-              disabled={props.isDisabled}
-              onClick={props.onClick}
-            >
-              Next <ChevronRight className="h-4 w-4" />
-            </NavigationButton>
-          )}
-        </GoToNextPage>
+        </CurrentPageLabel>
+        <span>of </span>
+        <NumberOfPages />
       </div>
+      <GoToNextPage>
+        {(props: RenderGoToPageProps) => (
+          <NavigationButton disabled={props.isDisabled} onClick={props.onClick}>
+            Next <ChevronRight className="h-4 w-4" />
+          </NavigationButton>
+        )}
+      </GoToNextPage>
     </div>
   );
 };

@@ -1,5 +1,5 @@
-import { type Dispatch, type SetStateAction, createContext } from "react";
 import type { Plugin } from "@react-pdf-viewer/core";
+import { createContext, type Dispatch, type SetStateAction } from "react";
 
 type ContextValue = {
   plugins: Plugin[];
