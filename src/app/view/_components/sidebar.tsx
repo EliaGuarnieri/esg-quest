@@ -53,34 +53,31 @@ export const Sidebar = () => {
         onValueChange={handleTabChange}
       >
         <TabsList className="h-safe z-10 flex flex-col justify-start gap-2 rounded-none border-t bg-accent p-2">
-          <TooltipProvider>
+          <TabsTrigger
+            className="rounded-md p-0"
+            value="pages"
+            onMouseDown={() => handleTabClick("pages")}
+          >
             <Tooltip>
-              <TooltipTrigger>
-                <TabsTrigger
-                  className="rounded-md p-2"
-                  value="pages"
-                  onMouseDown={() => handleTabClick("pages")}
-                >
-                  <File className="pointer-events-none" />
-                </TabsTrigger>
+              <TooltipTrigger asChild>
+                <File className="h-10 w-10 rounded-md p-2" />
               </TooltipTrigger>
               <TooltipContent side="right">Pages preview</TooltipContent>
             </Tooltip>
-          </TooltipProvider>
-          <TooltipProvider>
+          </TabsTrigger>
+
+          <TabsTrigger
+            className="rounded-md p-0"
+            value="bookmarks"
+            onMouseDown={() => handleTabClick("bookmarks")}
+          >
             <Tooltip>
-              <TooltipTrigger>
-                <TabsTrigger
-                  className="rounded-md p-2"
-                  value="bookmarks"
-                  onMouseDown={() => handleTabClick("bookmarks")}
-                >
-                  <Bookmark className="pointer-events-none" />
-                </TabsTrigger>
+              <TooltipTrigger asChild>
+                <Bookmark className="h-10 w-10 rounded-md p-2" />
               </TooltipTrigger>
               <TooltipContent side="right">Bookmarks</TooltipContent>
             </Tooltip>
-          </TooltipProvider>
+          </TabsTrigger>
         </TabsList>
         <AnimatePresence initial={false}>
           <TabsContent
