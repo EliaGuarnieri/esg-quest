@@ -7,9 +7,9 @@ import {
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useContext } from "react";
 
+import { PluginsInstance } from "@/app/view/_context";
 import { Button, type ButtonProps } from "@/components/ui/button";
 
-import { PluginsInstance } from "../_context";
 import { CurrentPageInput } from "./current-page-input";
 
 type NavigationButtonProps = ButtonProps &

@@ -10,11 +10,9 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent } from "@/components/ui/tooltip";
+
+import { Thumbnails } from "./thumbnails";
 
 const TabsContent = motion(StaticTabContent);
 
@@ -46,13 +44,13 @@ export const Sidebar = () => {
   };
 
   return (
-    <div className="h-safe fixed top-[52px] z-10">
+    <div className="fixed top-[52px] z-10 h-safe">
       <Tabs
         className="flex gap-2"
         value={activeTab}
         onValueChange={handleTabChange}
       >
-        <TabsList className="h-safe z-10 flex flex-col justify-start gap-2 rounded-none border-t bg-accent p-2">
+        <TabsList className="z-10 flex h-safe flex-col justify-start gap-2 rounded-none border-t bg-accent p-2">
           <TabsTrigger
             className="rounded-md p-0"
             value="pages"
@@ -79,11 +77,12 @@ export const Sidebar = () => {
             </Tooltip>
           </TabsTrigger>
         </TabsList>
+
         <AnimatePresence initial={false}>
           <TabsContent
             key="pages"
             value="pages"
-            className="h-safe absolute left-12 top-0 mt-0 w-80 border-t bg-accent p-2"
+            className="absolute left-12 top-0 mt-0 h-safe w-80 border-t bg-accent p-2"
             forceMount
             variants={variants}
             animate={activeTab === "pages" ? "open" : "closed"}
@@ -93,14 +92,15 @@ export const Sidebar = () => {
               type="auto"
             >
               <div className="w-full p-4">
-                Make changes to your account here.
+                <Thumbnails />
               </div>
             </ScrollArea>
           </TabsContent>
+
           <TabsContent
             key="bookmarks"
             value="bookmarks"
-            className="h-safe absolute left-12 top-0 mt-0 w-80 border-t bg-accent p-2"
+            className="absolute left-12 top-0 mt-0 h-safe w-80 border-t bg-accent p-2"
             forceMount
             variants={variants}
             animate={activeTab === "bookmarks" ? "open" : "closed"}
