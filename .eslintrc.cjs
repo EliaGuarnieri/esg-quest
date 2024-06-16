@@ -7,7 +7,8 @@ const config = {
   "plugins": [
     "@typescript-eslint",
     "drizzle",
-    "simple-import-sort"
+    "simple-import-sort",
+    "no-relative-import-paths"
   ],
   "extends": [
     "next/core-web-vitals",
@@ -58,7 +59,11 @@ const config = {
       }
     ],
     "simple-import-sort/imports": "error",
-    "simple-import-sort/exports": "error"
+    "simple-import-sort/exports": "error",
+    "no-relative-import-paths/no-relative-import-paths": [
+      "warn",
+      { "allowSameFolder": true, "prefix": "@", "rootDir": "src" }
+    ]
   }
 }
 module.exports = config;
