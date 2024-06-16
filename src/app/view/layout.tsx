@@ -4,6 +4,7 @@ import { type Plugin, Worker } from "@react-pdf-viewer/core";
 import { useState } from "react";
 
 import { BottomBar } from "./_components/bottombar";
+import { Sidebar } from "./_components/sidebar";
 import { Toolbar } from "./_components/toolbar";
 import { FileName, PluginsInstance } from "./_context";
 
@@ -22,6 +23,7 @@ export default function DashboardLayout(props: Props) {
         <PluginsInstance.Provider value={{ plugins, setPlugins }}>
           <FileName.Provider value={{ fileName, setFileName }}>
             <Toolbar />
+            <Sidebar />
             {children}
             <BottomBar />
           </FileName.Provider>

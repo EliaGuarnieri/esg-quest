@@ -28,7 +28,7 @@ export default function View() {
   };
 
   return (
-    <div className="h-svh">
+    <div className="h-safe">
       <Viewer
         fileUrl="/Ferrovie_dello_stato.pdf"
         defaultScale={1}
