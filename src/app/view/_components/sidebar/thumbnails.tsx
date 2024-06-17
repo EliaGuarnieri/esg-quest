@@ -44,7 +44,7 @@ export const Thumbnails = () => {
     <Card
       key={props.key}
       className={cn(
-        "mb-2 cursor-pointer border border-slate-50 bg-card shadow-none transition-colors hover:bg-slate-50",
+        "mb-2 cursor-pointer border border-accent bg-card shadow-md shadow-accent transition-colors hover:border-slate-50 hover:bg-slate-50",
         props.currentPage === props.pageIndex && "bg-accent",
       )}
       onClick={() => jumpToPage?.(props.pageIndex)}

@@ -6,6 +6,7 @@ import type { DocumentLoadEvent, PageLayout } from "@react-pdf-viewer/core";
 import { Viewer } from "@react-pdf-viewer/core";
 import { useContext } from "react";
 
+import { PageLayer } from "./_components/page-layer";
 import { PluginsInstance } from "./_context";
 import { FileName } from "./_context";
 
@@ -35,6 +36,7 @@ export default function View() {
         pageLayout={pageLayout}
         plugins={plugins}
         onDocumentLoad={handleDocumentLoad}
+        renderPage={(renderPageProps) => <PageLayer {...renderPageProps} />}
       />
     </div>
   );

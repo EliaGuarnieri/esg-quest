@@ -74,3 +74,10 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* FIX LIBRARY STYLES */
+
+/* Remove box-shadow from the page layer */
+.rpv-core__page-layer::after {
+  box-shadow: none !important;
+}
