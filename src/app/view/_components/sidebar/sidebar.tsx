@@ -3,6 +3,8 @@ import { AnimatePresence, motion, type Variants } from "framer-motion";
 import { Bookmark, File } from "lucide-react";
 import { useState } from "react";
 
+import { Annotations } from "@/app/view/_components/annotation";
+// import { Search } from "@/app/view/_components/annotation/search";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Tabs,
@@ -109,7 +111,9 @@ export const Sidebar = () => {
               className="h-full w-full rounded-md bg-white"
               type="auto"
             >
-              <div className="w-full p-4">Change your password here.</div>
+              <div className="w-full p-4">
+                <Annotations />
+              </div>
             </ScrollArea>
           </TabsContent>
         </AnimatePresence>

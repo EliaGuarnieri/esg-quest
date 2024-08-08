@@ -7,12 +7,12 @@ import { Viewer } from "@react-pdf-viewer/core";
 import { useContext } from "react";
 
 import { PageLayer } from "./_components/page-layer";
-import { PluginsInstance } from "./_context";
-import { FileName } from "./_context";
+import { Document, FileName, PluginsInstance } from "./_context";
 
 export default function View() {
   const { plugins } = useContext(PluginsInstance);
   const { setFileName } = useContext(FileName);
+  const { setDocument } = useContext(Document);
 
   const pageLayout: PageLayout = {
     transformSize: ({ size }) => ({
@@ -26,6 +26,7 @@ export default function View() {
 
   const handleDocumentLoad = (e: DocumentLoadEvent) => {
     setFileName(e.file.name);
+    setDocument(e.doc);
   };
 
   return (
