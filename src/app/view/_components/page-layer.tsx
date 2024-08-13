@@ -1,5 +1,12 @@
-import { type RenderPageProps } from "@react-pdf-viewer/core";
+import {
+  type RenderPageProps,
+  useIsomorphicLayoutEffect,
+} from "@react-pdf-viewer/core";
 import { useEffect } from "react";
+
+import { type ExtendedPageTextItem } from "@/app/view/_types";
+import { extractArea } from "@/lib/utils";
+import { api } from "@/trpc/react";
 
 export const PageLayer = (props: RenderPageProps) => {
   const {

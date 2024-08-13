@@ -1,5 +1,9 @@
+import { type PdfJs } from "@react-pdf-viewer/core";
+import { type HighlightArea } from "@react-pdf-viewer/highlight";
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
+
+import { type ExtendedPageTextItem } from "@/app/view/_types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -35,3 +39,60 @@ export function transformJsonString(jsonString: string) {
       return null;
   }
 }
+
+/**
+ * Extracts the area of the highlighted text
+ * @param items The text items of the page
+ * @param viewport The viewport of the page
+ * @param pageIndex The index of the page
+ * @returns The area of the highlighted text
+ */
+export const extractArea = ({
+    items,
+    viewport,
+    pageIndex,
+  }: {
+    items: ExtendedPageTextItem[];
+    viewport: PdfJs.ViewPort;
+    pageIndex: number;
+  }): HighlightArea => {
+    // Initial values for minTop and minLeft as Infinity
+    let minTop = Infinity;
+    let minLeft = Infinity;
+
+    // Initial values for maxWidth as -Infinity and totalHeight as 0
+    let maxWidth = -Infinity;
+    let totalHeight = 0;
+
+    for (const item of items) {
+      if (item.transform[5] < minTop) {
+        minTop = item.transform[5];
+      }
+      if (item.transform[4] < minLeft) {
+        minLeft = item.transform[4];
+      }
+      if (item.width > maxWidth) {
+        maxWidth = item.width;
+      }
+      totalHeight += item.height;
+    }
+
+    const viewportHeight = viewport.height;
+    const viewportWidth = viewport.width;
+
+    // Convert the item's coordinates to the viewport's coordinate system
+    const left = ((minLeft - 3) / viewportWidth) * 100;
+    const top = ((viewportHeight - minTop - totalHeight) / viewportHeight) * 100;
+
+    // Convert the item's dimensions to percentages relative to the viewport's dimensions
+    const width = (maxWidth / viewportWidth) * 100;
+    const height = (totalHeight / viewportHeight) * 100;
+
+    return {
+      height,
+      width,
+      top,
+      left,
+      pageIndex: pageIndex - 1,
+    };
+  };

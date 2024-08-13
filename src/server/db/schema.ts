@@ -1,14 +1,17 @@
 // Example model schema from the Drizzle docs
 // https://orm.drizzle.team/docs/sql-schema-declaration
 
-import { sql } from "drizzle-orm";
+import { type HighlightArea } from "@react-pdf-viewer/highlight";
+import { relations } from "drizzle-orm";
 import {
   index,
+  integer,
+  json,
   pgTableCreator,
   serial,
-  timestamp,
   varchar,
 } from "drizzle-orm/pg-core";
+
 
 /**
  * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
@@ -18,17 +21,35 @@ import {
  */
 export const createTable = pgTableCreator((name) => `esgquest_${name}`);
 
-export const posts = createTable(
-  "post",
+export const files = createTable(
+  "file",
   {
     id: serial("id").primaryKey(),
-    name: varchar("name", { length: 256 }),
-    createdAt: timestamp("created_at", { withTimezone: true })
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-    updatedAt: timestamp("updatedAt", { withTimezone: true }),
+    name: varchar("name", { length: 256 }).notNull().unique(),
+    url: varchar("url", { length: 1024 }).notNull(),
   },
-  (example) => ({
-    nameIndex: index("name_idx").on(example.name),
+  (file) => ({
+    nameIndex: index("name_idx").on(file.name),
   })
-);
+)
+
+export const filesRelations = relations(files, ({ many }) => ({
+  notes: many(notes),
+}))
+
+export const notes = createTable(
+  "note",
+  {
+    id: varchar("id", { length: 256 }).primaryKey(),
+    text: varchar("text", { length: 1024 }).notNull(),
+    area: json("area").$type<HighlightArea>().notNull(),
+    fileId: integer("file_id").notNull()
+  },
+)
+
+export const notesRelations = relations(notes, ({ one }) => ({
+  file: one(files, {
+    fields: [notes.fileId],
+    references: [files.id],
+  }),
+}))
