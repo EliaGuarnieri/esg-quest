@@ -7,12 +7,17 @@ import { type RenderHighlightsProps } from "@react-pdf-viewer/highlight";
 import { useContext } from "react";
 
 import { FileName } from "@/app/view/_context";
+import { type Note } from "@/app/view/_types";
 import { api } from "@/trpc/react";
 
-export const Highlights = (props: RenderHighlightsProps) => {
+export const Highlights = (
+  props: RenderHighlightsProps & {
+    jumpToNote: (note: Note) => void;
+  },
+) => {
   const { fileName } = useContext(FileName);
 
-  const { data, isLoading } = api.annotation.getAll.useQuery({
+  const { data, isLoading } = api.annotation.getByPageIndex.useQuery({
     name: fileName,
     pageIndex: props.pageIndex,
   });
@@ -20,13 +25,12 @@ export const Highlights = (props: RenderHighlightsProps) => {
   if (isLoading || !data) return null;
 
   return data
-    ?.filter((chunk) => chunk.area.pageIndex === props.pageIndex)
-    .map((chunk, idx) => (
+    ?.filter((note) => note.area.pageIndex === props.pageIndex)
+    .map((note, idx) => (
       <button
         key={idx}
-        id="highlight-area-test"
         className="highlight-area border-2 border-yellow-500"
-        onClick={() => console.log("Clicked")}
+        onClick={() => props.jumpToNote(note)}
         style={Object.assign(
           {},
           {
@@ -41,7 +45,7 @@ export const Highlights = (props: RenderHighlightsProps) => {
           // Calculate the position
           // to make the highlight area displayed at the desired position
           // when users zoom or rotate the document
-          props.getCssProperties(chunk.area, props.rotation),
+          props.getCssProperties(note.area, props.rotation),
         )}
       />
     ));

@@ -2,12 +2,14 @@ import { type PdfJs } from "@react-pdf-viewer/core";
 import { type HighlightArea } from "@react-pdf-viewer/highlight";
 
 export type ExtendedPageTextItem = PdfJs.PageTextItem & {
-    height: number;
-    width: number;
-    transform: [number, number, number, number, number, number];
-  };
+  height: number;
+  width: number;
+  transform: [number, number, number, number, number, number];
+};
 
-export type HighlightChunks = {
-    chunk: number;
-    area: HighlightArea;
-  };
+export type Note = {
+  id: string;
+  text: string;
+  area: HighlightArea;
+  fileId: number;
+};

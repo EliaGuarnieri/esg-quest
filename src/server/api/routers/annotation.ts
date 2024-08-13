@@ -28,6 +28,19 @@ export const annotationRouter = createTRPCRouter({
     }),
 
   getAll: publicProcedure
+    .input(z.object({ name: z.string() }))
+    .query(async ({ input, ctx }) => {
+      const file = await ctx.db.query.files.findFirst({
+        where: ((file, { eq }) => eq(file.name, input.name)),
+        with: {
+          notes: true,
+        }
+      });
+
+      return file?.notes;
+    }),
+
+  getByPageIndex: publicProcedure
     .input(z.object({ name: z.string(), pageIndex: z.number() }))
     .query(async ({ input, ctx }) => {
       const file = await ctx.db.query.files.findFirst({

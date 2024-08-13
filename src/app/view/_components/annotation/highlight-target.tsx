@@ -4,7 +4,6 @@ import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export const HighlightTarget = (props: RenderHighlightTargetProps) => {
-  console.log({ position: props.selectionRegion });
   return (
     <div
       className="absolute left-full z-10 pl-4"
