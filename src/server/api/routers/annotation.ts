@@ -37,7 +37,14 @@ export const annotationRouter = createTRPCRouter({
         }
       });
 
-      return file?.notes;
+      if (!file) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "File not found",
+        });
+      }
+
+      return file.notes;
     }),
 
   getByPageIndex: publicProcedure
@@ -49,6 +56,13 @@ export const annotationRouter = createTRPCRouter({
           notes: true,
         }
       });
+
+      if (!file) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "File not found",
+        });
+      }
 
       return file?.notes.filter((note) => note.area.pageIndex === input.pageIndex);
     }),

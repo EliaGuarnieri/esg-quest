@@ -19,9 +19,9 @@ import { Thumbnails } from "./thumbnails";
 const TabsContent = motion(StaticTabContent);
 
 export const Sidebar = () => {
-  const [activeTab, setActiveTab] = useState<string | undefined>(undefined);
+  const [activeTab, setActiveTab] = useState<string>("closed");
 
-  const handleTabChange = (value: string | undefined) => {
+  const handleTabChange = (value: string) => {
     if (value === activeTab) return setActiveTab("closed");
     return setActiveTab(value);
   };
@@ -49,6 +49,7 @@ export const Sidebar = () => {
     <div className="fixed top-[52px] z-10 h-safe">
       <Tabs
         className="flex gap-2"
+        activationMode="manual"
         value={activeTab}
         onValueChange={handleTabChange}
       >
@@ -68,14 +69,14 @@ export const Sidebar = () => {
 
           <TabsTrigger
             className="rounded-md p-0"
-            value="bookmarks"
-            onMouseDown={() => handleTabClick("bookmarks")}
+            value="annotations"
+            onMouseDown={() => handleTabClick("annotations")}
           >
             <Tooltip>
               <TooltipTrigger asChild>
                 <Bookmark className="h-10 w-10 rounded-md p-2" />
               </TooltipTrigger>
-              <TooltipContent side="right">Bookmarks</TooltipContent>
+              <TooltipContent side="right">Annotations</TooltipContent>
             </Tooltip>
           </TabsTrigger>
         </TabsList>
@@ -100,19 +101,19 @@ export const Sidebar = () => {
           </TabsContent>
 
           <TabsContent
-            key="bookmarks"
-            value="bookmarks"
+            key="annotations"
+            value="annotations"
             className="absolute left-12 top-0 mt-0 h-safe w-80 border-t bg-accent p-2"
             forceMount
             variants={variants}
-            animate={activeTab === "bookmarks" ? "open" : "closed"}
+            animate={activeTab === "annotations" ? "open" : "closed"}
           >
             <ScrollArea
               className="h-full w-full rounded-md bg-white"
               type="auto"
             >
               <div className="w-full p-4">
-                <Annotations />
+                <Annotations setActiveTab={setActiveTab} />
               </div>
             </ScrollArea>
           </TabsContent>
