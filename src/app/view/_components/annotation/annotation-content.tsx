@@ -62,8 +62,6 @@ export const AnnotationContent = (props: Props) => {
     deleteNoteMutation.mutate({ id: note.id });
   };
 
-  console.log({ value });
-
   return (
     <Accordion
       type="single"
