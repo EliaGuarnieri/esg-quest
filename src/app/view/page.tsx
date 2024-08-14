@@ -52,6 +52,10 @@ export default function View() {
   });
 
   useIsomorphicLayoutEffect(() => {
+    /**
+     * TODO: trigger the annotation process when the a function is called.
+     * @description: It cannot be done in the backend because the annotation process requires the viewport of the page that is defined in the frontend.
+     */
     if (!fileName || !document || isLoading || !data) return;
 
     if (isAnnotated || isLoadingFile) return;
@@ -101,8 +105,8 @@ export default function View() {
                 areas,
                 text,
                 pageIndex: item.page,
-                // TODO: objective: item.objective, need to be added to incoming data
-                // TODO: condition: item.condition, need to be added to incoming data
+                objective: item.objective, // TODO: objective: item.objective, need to be added to incoming data
+                condition: item.condition, // TODO: condition: item.condition, need to be added to incoming data
               });
             }),
         );

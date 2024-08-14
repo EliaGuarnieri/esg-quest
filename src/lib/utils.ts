@@ -15,11 +15,15 @@ export function transformJsonString(jsonString: string) {
       interface InputData {
           text: string;
           page: number;
+          objective?: string;
+          condition?: string;
       }
 
       interface OutputData {
           texts: string[];
           page: number;
+          objective?: string;
+          condition?: string;
       }
 
       // Parse the input JSON string
