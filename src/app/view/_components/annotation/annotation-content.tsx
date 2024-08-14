@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { Trash } from "lucide-react";
+import { Dispatch, SetStateAction, useState } from "react";
 
 import { type Note } from "@/app/view/_types";
 import {
@@ -16,14 +17,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { api } from "@/trpc/react";
+import { toast } from "sonner";
 
 type Props = {
   note: Note;
-  goToNote: (note: Note) => void;
+  value: string;
+  setValue: Dispatch<SetStateAction<string>>;
 };
 
 export const AnnotationContent = (props: Props) => {
-  const { note, goToNote } = props;
+  const { note, value, setValue } = props;
 
   const [objective, setObjective] = useState<string | undefined>();
   const [condition, setCondition] = useState<string | undefined>();
@@ -40,11 +43,39 @@ export const AnnotationContent = (props: Props) => {
     if (type === "condition") setCondition(value);
   };
 
+  const utils = api.useUtils();
+  const deleteNoteMutation = api.annotation.delete.useMutation({
+    onSuccess: () => {
+      toast.success("Note deleted");
+    },
+    onError: () => {
+      toast.error("Failed to delete note", {
+        description: "Please try again",
+      });
+    },
+    onSettled: () => {
+      void utils.annotation.invalidate();
+    },
+  });
+
+  const deleteNote = () => {
+    deleteNoteMutation.mutate({ id: note.id });
+  };
+
+  console.log({ value });
+
   return (
-    <Accordion type="single" collapsible>
-      <AccordionItem value="item-1">
-        <AccordionTrigger className="justify-start py-2">
-          <span className=" max-w-56 truncate">{note.text}</span>
+    <Accordion
+      type="single"
+      collapsible
+      value={value}
+      onValueChange={(value) => setValue(value)}
+    >
+      <AccordionItem value={note.id}>
+        <AccordionTrigger className="justify-start py-2 data-[state=open]:pb-4">
+          <span className="max-w-56 truncate transition-all group-hover:max-w-48">
+            {note.text}
+          </span>
         </AccordionTrigger>
         <AccordionContent className="space-y-4 pb-0 pt-2">
           <div>
@@ -104,8 +135,12 @@ export const AnnotationContent = (props: Props) => {
             <p className="rounded-md border bg-card p-2 text-xs">{note.text}</p>
           </div>
 
-          <Button className="w-full" onClick={() => goToNote(note)}>
-            Scroll to note
+          <Button
+            variant="secondary"
+            className="w-full text-red-600"
+            onClick={() => deleteNote()}
+          >
+            Delete note <Trash className="ml-2 h-4 w-4" />
           </Button>
         </AccordionContent>
       </AccordionItem>

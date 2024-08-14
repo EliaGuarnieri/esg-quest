@@ -4,6 +4,7 @@
 import { type HighlightArea } from "@react-pdf-viewer/highlight";
 import { relations } from "drizzle-orm";
 import {
+  boolean,
   index,
   integer,
   json,
@@ -27,6 +28,7 @@ export const files = createTable(
     id: serial("id").primaryKey(),
     name: varchar("name", { length: 256 }).notNull().unique(),
     url: varchar("url", { length: 1024 }).notNull(),
+    annotated: boolean("annotated").notNull().default(false),
   },
   (file) => ({
     nameIndex: index("name_idx").on(file.name),

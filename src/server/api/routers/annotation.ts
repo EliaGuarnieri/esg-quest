@@ -1,5 +1,5 @@
 import { TRPCError } from "@trpc/server";
-import { desc,eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { z } from "zod";
 
 import json from "@/app/api/prova_ferrovie.json";
@@ -114,6 +114,14 @@ export const annotationRouter = createTRPCRouter({
         objective: input.objective,
         condition: input.condition,
       })
+      .where(eq(notes.id, input.id))
+      .returning();
+    }),
+
+  delete: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(({ input, ctx }) => {
+      return ctx.db.delete(notes)
       .where(eq(notes.id, input.id))
       .returning();
     })

@@ -1,7 +1,4 @@
-import {
-  type HighlightArea,
-  type RenderHighlightTargetProps,
-} from "@react-pdf-viewer/highlight";
+import { type RenderHighlightTargetProps } from "@react-pdf-viewer/highlight";
 import { useContext, useState } from "react";
 
 import { FileName } from "@/app/view/_context";
@@ -14,8 +11,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { extractArea } from "@/lib/utils";
 import { api } from "@/trpc/react";
+import { toast } from "sonner";
 
 export const HighlightContent = (props: RenderHighlightTargetProps) => {
   const { fileName } = useContext(FileName);
@@ -24,14 +21,22 @@ export const HighlightContent = (props: RenderHighlightTargetProps) => {
   const [condition, setCondition] = useState<string | undefined>();
 
   const utils = api.useUtils();
-  const note = api.annotation.add.useMutation({
+  const addNoteMutation = api.annotation.add.useMutation({
+    onSuccess: () => {
+      toast.success("Note added");
+    },
+    onError: () => {
+      toast.error("Failed to add note", {
+        description: "Please try again",
+      });
+    },
     onSettled: () => {
       void utils.annotation.invalidate();
     },
   });
 
   const addNote = () => {
-    note.mutate({
+    addNoteMutation.mutate({
       fileName,
       id: `${fileName}-${props.selectionRegion.pageIndex}-${Date.now()}`,
       areas: props.highlightAreas,

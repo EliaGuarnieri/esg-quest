@@ -28,6 +28,12 @@ export default function View() {
     }),
   };
 
+  const { data: isAnnotated, isLoading: isLoadingFile } =
+    api.file.isAnnotated.useQuery(
+      { name: fileName },
+      { staleTime: Infinity, enabled: !!fileName },
+    );
+
   const { data, isLoading } = api.annotation.getData.useQuery(
     {
       name: "prova_ferrovie.json",
@@ -37,9 +43,12 @@ export default function View() {
     },
   );
   const addNote = api.annotation.add.useMutation();
+  const setIsAnnotated = api.file.setAnnotated.useMutation();
 
   useIsomorphicLayoutEffect(() => {
     if (!fileName || !document || isLoading || !data) return;
+
+    if (isAnnotated || isLoadingFile) return;
 
     void (async () => {
       for (let pageNum = 0; pageNum < document.numPages; pageNum++) {
@@ -70,14 +79,16 @@ export default function View() {
                 areas,
                 text: filteredItems.map((item) => item.str).join("\n"),
                 pageIndex: item.page,
-                // objective: item.objective, need to be added to incoming data
-                // condition: item.condition, need to be added to incoming data
+                // TODO: objective: item.objective, need to be added to incoming data
+                // TODO: condition: item.condition, need to be added to incoming data
               });
             }),
         );
       }
+
+      setIsAnnotated.mutate({ name: fileName });
     })();
-  }, [data, document, isLoading, fileName]);
+  }, [data, document, isLoading, fileName, isAnnotated, isLoadingFile]);
 
   const handleDocumentLoad = (e: DocumentLoadEvent) => {
     const trimmedFileName = e.file.name.split(".")[0]!.replace(/^\/+/, "");

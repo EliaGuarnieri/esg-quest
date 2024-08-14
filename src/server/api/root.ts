@@ -1,4 +1,5 @@
 import { annotationRouter } from "@/server/api/routers/annotation";
+import { fileRouter } from "@/server/api/routers/file";
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
 
 /**
@@ -8,6 +9,7 @@ import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
  */
 export const appRouter = createTRPCRouter({
   annotation: annotationRouter,
+  file: fileRouter,
 });
 
 // export type definition of API
