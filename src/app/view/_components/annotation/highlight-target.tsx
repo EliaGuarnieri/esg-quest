@@ -1,19 +1,11 @@
 import { type RenderHighlightTargetProps } from "@react-pdf-viewer/highlight";
-import { Plus } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import { HighlightContent } from "./highlight-content";
 
 export const HighlightTarget = (props: RenderHighlightTargetProps) => {
   return (
-    <div
-      className="absolute left-full z-10 pl-4"
-      style={{
-        top: `${props.selectionRegion.top}%`,
-      }}
-    >
-      <Button variant="ghost" onClick={props.toggle}>
-        <Plus className="mr-2 h-4 w-4" /> Add annotation
-      </Button>
+    <div className="absolute left-full top-1/3 z-10 pl-4">
+      <HighlightContent {...props} />
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import { TRPCError } from "@trpc/server";
+import { desc,eq } from "drizzle-orm";
 import { z } from "zod";
 
 import json from "@/app/api/prova_ferrovie.json";
@@ -44,7 +45,7 @@ export const annotationRouter = createTRPCRouter({
         });
       }
 
-      return file.notes;
+      return file.notes.sort((a, b) => a.pageIndex - b.pageIndex);
     }),
 
   getByPageIndex: publicProcedure
@@ -64,7 +65,7 @@ export const annotationRouter = createTRPCRouter({
         });
       }
 
-      return file?.notes.filter((note) => note.area.pageIndex === input.pageIndex);
+      return file?.notes.filter((note) => note.pageIndex === input.pageIndex);
     }),
 
   add: publicProcedure
@@ -92,13 +93,28 @@ export const annotationRouter = createTRPCRouter({
       }
 
       const newNote = await ctx.db.insert(notes).values({
-        id: input.id,
-        text: input.text,
-        area: input.area,
+        ...input,
+        pageIndex: input.pageIndex,
         fileId: fileId,
       }).returning();
 
       return newNote;
 
     }),
+
+  update: publicProcedure
+    .input(z.object({
+      id: z.string(),
+      objective: z.string().optional(),
+      condition: z.string().optional(),
+    }))
+    .mutation(({ input, ctx }) => {
+      return ctx.db.update(notes)
+      .set({
+        objective: input.objective,
+        condition: input.condition,
+      })
+      .where(eq(notes.id, input.id))
+      .returning();
+    })
 });

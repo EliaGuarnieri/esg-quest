@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import { type Note } from "@/app/view/_types";
 import {
   Accordion,
@@ -13,26 +15,31 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { api } from "@/trpc/react";
 
 type Props = {
   note: Note;
   goToNote: (note: Note) => void;
 };
 
-/*
-climate change mitigation
-climate change adaptation
-pollution prevention and control
-protection and restoration of biodiversity and ecosystems
-sustainable use and protection of water and marine resources
-transition to a circular economy
-
-do not significant harm
-substantial contribution
-*/
-
 export const AnnotationContent = (props: Props) => {
   const { note, goToNote } = props;
+
+  const [objective, setObjective] = useState<string | undefined>();
+  const [condition, setCondition] = useState<string | undefined>();
+
+  const noteMutation = api.annotation.update.useMutation();
+
+  const updateNote = (value: string, type: "objective" | "condition") => {
+    noteMutation.mutate({
+      id: note.id,
+      [type]: value,
+    });
+
+    if (type === "objective") setObjective(value);
+    if (type === "condition") setCondition(value);
+  };
+
   return (
     <Accordion type="single" collapsible>
       <AccordionItem value="item-1">
@@ -42,13 +49,16 @@ export const AnnotationContent = (props: Props) => {
         <AccordionContent className="space-y-4 pb-0 pt-2">
           <div>
             <h4 className="mb-1 font-bold">Objectives</h4>
-            <Select>
+            <Select
+              value={objective ?? note.objective ?? undefined}
+              onValueChange={(value) => updateNote(value, "objective")}
+            >
               <SelectTrigger className="w-full text-left focus:ring-0 focus:ring-ring focus:ring-offset-0">
                 <SelectValue placeholder="Select the objective" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="do not significant harm">
-                  do not significant harm
+                <SelectItem value="climate change mitigation">
+                  climate change mitigation
                 </SelectItem>
                 <SelectItem value="climate change adaptation">
                   climate change adaptation
@@ -71,13 +81,16 @@ export const AnnotationContent = (props: Props) => {
 
           <div>
             <h4 className="mb-1 font-bold">Conditions</h4>
-            <Select>
+            <Select
+              value={condition ?? note.condition ?? undefined}
+              onValueChange={(value) => updateNote(value, "condition")}
+            >
               <SelectTrigger className="w-full text-left focus:ring-0 focus:ring-ring focus:ring-offset-0">
                 <SelectValue placeholder="Select the condition" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="climate change mitigation">
-                  climate change mitigation
+                <SelectItem value="do not significant harm">
+                  do not significant harm
                 </SelectItem>
                 <SelectItem value="substantial contribution">
                   substantial contribution

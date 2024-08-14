@@ -42,8 +42,11 @@ export const notes = createTable(
   {
     id: varchar("id", { length: 256 }).primaryKey(),
     text: varchar("text", { length: 1024 }).notNull(),
-    area: json("area").$type<HighlightArea>().notNull(),
-    fileId: integer("file_id").notNull()
+    areas: json("areas").$type<HighlightArea[]>().notNull(),
+    fileId: integer("file_id").notNull(),
+    pageIndex: integer("page_index").notNull(),
+    objective: varchar("objective", { length: 256 }),
+    condition: varchar("condition", { length: 256 }),
   },
 )
 

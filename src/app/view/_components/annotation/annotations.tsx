@@ -19,6 +19,7 @@ import { cn } from "@/lib/utils";
 import { api } from "@/trpc/react";
 
 import { AnnotationContent } from "./annotation-content";
+import { HighlightContent } from "./highlight-content";
 import { HighlightTarget } from "./highlight-target";
 import { Highlights } from "./highlights";
 
@@ -68,13 +69,13 @@ export const Annotations = (props: Props) => {
 
   const handleNoteClick = (note: Note) => {
     setSelectedNote((prev) => (prev === note.id ? prev : note.id));
-    jumpToHighlightArea(note.area);
+    jumpToHighlightArea(note.areas[0]!);
   };
 
   return data.map((note, index) => {
-    const isSamePage = currentPage.current === note.area.pageIndex;
+    const isSamePage = currentPage.current === note.pageIndex;
     if (!isSamePage) {
-      currentPage.current = note.area.pageIndex;
+      currentPage.current = note.pageIndex;
     }
     return (
       <Fragment key={note.id}>
@@ -83,7 +84,7 @@ export const Annotations = (props: Props) => {
             className={cn("flex justify-center pb-2", index !== 0 && "pt-4")}
           >
             <span className="rounded-full bg-accent px-4 text-sm text-foreground">
-              On page {currentPage.current}
+              On page {currentPage.current + 1}
             </span>
           </div>
         )}

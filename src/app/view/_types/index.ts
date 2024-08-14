@@ -10,6 +10,9 @@ export type ExtendedPageTextItem = PdfJs.PageTextItem & {
 export type Note = {
   id: string;
   text: string;
-  area: HighlightArea;
+  areas: HighlightArea[];
   fileId: number;
+  pageIndex: number;
+  objective: string | null;
+  condition: string | null;
 };

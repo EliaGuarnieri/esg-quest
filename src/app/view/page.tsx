@@ -58,7 +58,7 @@ export default function View() {
                 texts.includes(item.str),
               );
 
-              const area = extractArea({
+              const areas = extractArea({
                 items: filteredItems,
                 viewport,
                 pageIndex,
@@ -67,8 +67,11 @@ export default function View() {
               addNote.mutate({
                 id: `${fileName}-${pageNum}-${index}`,
                 fileName,
-                area,
+                areas,
                 text: filteredItems.map((item) => item.str).join("\n"),
+                pageIndex: item.page,
+                // objective: item.objective, need to be added to incoming data
+                // condition: item.condition, need to be added to incoming data
               });
             }),
         );

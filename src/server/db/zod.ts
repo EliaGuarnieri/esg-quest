@@ -10,13 +10,13 @@ export const selectFileSchema = createSelectSchema(files);
 
 export const insertNoteSchema = createInsertSchema(notes, {
   fileId: (schema) => schema.fileId.optional(),
-  area: z.object({
+  areas: z.array(z.object({
     height: z.number(),
     left: z.number(),
     pageIndex: z.number(),
     top: z.number(),
     width: z.number(),
-  }),
+  })),
 }).merge(z.object({
   fileName: z.string(),
   }));
