@@ -43,7 +43,13 @@ export default function View() {
     },
   );
   const addNote = api.annotation.add.useMutation();
-  const setIsAnnotated = api.file.setAnnotated.useMutation();
+
+  const utils = api.useUtils();
+  const setIsAnnotated = api.file.setAnnotated.useMutation({
+    onSettled: () => {
+      utils.annotation.invalidate();
+    },
+  });
 
   useIsomorphicLayoutEffect(() => {
     if (!fileName || !document || isLoading || !data) return;
@@ -58,26 +64,42 @@ export default function View() {
             .map(async (item, index) => {
               const texts = item.texts;
               const pageIndex = item.page + 1;
+
               const page = await document.getPage(pageIndex);
               const viewport = page.getViewport({ scale: 1 });
               const items = (await page.getTextContent())
                 .items as ExtendedPageTextItem[];
 
+              /**
+               * Filter the text items that match the highlighted text
+               */
               const filteredItems = items.filter((item) =>
                 texts.includes(item.str),
               );
 
+              /**
+               * Extract the area of the highlighted text
+               * @see extractArea in src/lib/utils.ts
+               */
               const areas = extractArea({
                 items: filteredItems,
                 viewport,
                 pageIndex,
               });
 
+              /**
+               * Concatenate the filtered text items and remove the line breaks
+               */
+              const text = filteredItems
+                .map((item) => item.str)
+                .join("\r\n")
+                .replace(/(-\r\n)/gm, "");
+
               addNote.mutate({
                 id: `${fileName}-${pageNum}-${index}`,
                 fileName,
                 areas,
-                text: filteredItems.map((item) => item.str).join("\n"),
+                text,
                 pageIndex: item.page,
                 // TODO: objective: item.objective, need to be added to incoming data
                 // TODO: condition: item.condition, need to be added to incoming data

@@ -29,7 +29,7 @@ export function transformJsonString(jsonString: string) {
       // Iterate over each item in the array
       dataArray.forEach((item) => {
           // Split the text by line breaks, trim each line, and create a new object for each line
-          const lines = item.text.split(/\n|\r/).map(line => line.trim()).filter(line => line !== '');
+          const lines = item.text.split(/\r\n|\n|\r/).map(line => line.trim()).filter(line => line !== '');
           transformedData.push({ texts: lines, page: item.page });
       });
 
